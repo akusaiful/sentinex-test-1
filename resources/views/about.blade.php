@@ -120,9 +120,11 @@
                 <h2>Get in touch</h2>
                 <p>
                     Have a question or an idea? Open an issue on
-                    <a class="inline" href="https://github.com/laravel/laravel" target="_blank" rel="noopener">GitHub</a>.
+                    <a class="inline" href="https://github.com/laravel/laravel" target="_blank" rel="noopener">GitHub</a>
+                    or use our contact form.
                 </p>
 
+                <a href="{{ route('contact.create') }}" class="button">Contact us</a>
                 <a href="{{ url('/') }}" class="button">Get started</a>
             </main>
         </div>
