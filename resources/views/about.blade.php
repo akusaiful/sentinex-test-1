@@ -31,7 +31,7 @@
                     min-height: 100vh;
                     font-family: var(--font-sans);
                     color: var(--foreground);
-                    background: linear-gradient(to bottom right, #FDFDFC, #f4efec, #e9dfd8);
+                    background: linear-gradient(to bottom right, #2563eb, #10b981);
                 }
 
                 .page {
@@ -80,6 +80,21 @@
                     color: var(--accent);
                     font-weight: 500;
                 }
+
+                .button {
+                    display: inline-block;
+                    margin-top: 1.5rem;
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 0.375rem;
+                    background: linear-gradient(to right, #2563eb, #10b981);
+                    color: #ffffff;
+                    font-weight: 500;
+                    text-decoration: none;
+                }
+
+                .button:hover {
+                    opacity: 0.9;
+                }
             </style>
         @endif
     </head>
@@ -106,6 +121,8 @@
                     Have a question or an idea? Open an issue on
                     <a class="inline" href="https://github.com/laravel/laravel" target="_blank" rel="noopener">GitHub</a>.
                 </p>
+
+                <a href="{{ url('/') }}" class="button">Get started</a>
             </main>
         </div>
     </body>
