@@ -456,7 +456,13 @@
                     openModal();
                 });
 
-                confirmButton.addEventListener('click', function () {
+                confirmButton.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    if (confirmed) {
+                        return;
+                    }
+
                     confirmed = true;
                     closeModal();
                     form.submit();
