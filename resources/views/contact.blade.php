@@ -136,20 +136,98 @@
                     align-items: center;
                     justify-content: center;
                     padding: 1rem;
-                    background: rgba(0, 0, 0, 0.5);
+                    background: rgba(17, 24, 39, 0.6);
+                    -webkit-backdrop-filter: blur(4px);
+                    backdrop-filter: blur(4px);
+                    animation: modal-backdrop-in 150ms ease-out;
                 }
 
                 [data-confirmation-modal].hidden {
                     display: none;
                 }
 
-                [data-confirmation-modal] > div {
+                [data-confirmation-modal] .modal-panel {
                     width: 100%;
                     max-width: 28rem;
                     background: #ffffff;
-                    border-radius: 0.5rem;
+                    border-radius: 1rem;
                     padding: 1.5rem;
-                    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+                    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                    animation: modal-panel-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
+                }
+
+                [data-confirmation-modal] .modal-header {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 1rem;
+                }
+
+                [data-confirmation-modal] .modal-icon {
+                    display: flex;
+                    flex: none;
+                    align-items: center;
+                    justify-content: center;
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 9999px;
+                    background: #eff6ff;
+                    color: #2563eb;
+                }
+
+                [data-confirmation-modal] .modal-icon svg {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+
+                [data-confirmation-modal] .modal-title {
+                    margin: 0;
+                    font-size: 1.125rem;
+                    line-height: 1.5rem;
+                    font-weight: 600;
+                    color: #111827;
+                }
+
+                [data-confirmation-modal] .modal-description {
+                    margin: 0.25rem 0 0;
+                    font-size: 0.875rem;
+                    line-height: 1.25rem;
+                    color: #6b7280;
+                }
+
+                [data-confirmation-modal] .modal-summary {
+                    margin: 1.25rem 0 0;
+                    padding: 0;
+                    list-style: none;
+                    border: 1px solid #f3f4f6;
+                    border-radius: 0.75rem;
+                    background: #f9fafb;
+                    overflow: hidden;
+                }
+
+                [data-confirmation-modal] .modal-summary-row {
+                    display: flex;
+                    align-items: baseline;
+                    justify-content: space-between;
+                    gap: 1rem;
+                    padding: 0.625rem 1rem;
+                    font-size: 0.875rem;
+                }
+
+                [data-confirmation-modal] .modal-summary-row + .modal-summary-row {
+                    border-top: 1px solid #f3f4f6;
+                }
+
+                [data-confirmation-modal] .modal-summary dt {
+                    color: #6b7280;
+                    font-weight: 500;
+                }
+
+                [data-confirmation-modal] .modal-summary dd {
+                    margin: 0;
+                    color: #111827;
+                    font-weight: 500;
+                    text-align: right;
+                    word-break: break-word;
                 }
 
                 [data-confirmation-modal] .modal-actions {
@@ -161,11 +239,16 @@
 
                 [data-confirmation-modal] .modal-cancel,
                 [data-confirmation-modal] .modal-confirm {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
                     padding: 0.5rem 1rem;
-                    border-radius: 0.375rem;
+                    border-radius: 0.5rem;
                     font-size: 0.875rem;
                     font-weight: 500;
+                    line-height: 1.25rem;
                     cursor: pointer;
+                    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
                 }
 
                 [data-confirmation-modal] .modal-cancel {
@@ -174,10 +257,54 @@
                     color: #374151;
                 }
 
+                [data-confirmation-modal] .modal-cancel:hover {
+                    background: #f9fafb;
+                }
+
                 [data-confirmation-modal] .modal-confirm {
-                    border: 0;
+                    border: 1px solid transparent;
                     background: #2563eb;
                     color: #ffffff;
+                    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                }
+
+                [data-confirmation-modal] .modal-confirm:hover {
+                    background: #1d4ed8;
+                }
+
+                [data-confirmation-modal] .modal-cancel:focus-visible,
+                [data-confirmation-modal] .modal-confirm:focus-visible {
+                    outline: 2px solid #2563eb;
+                    outline-offset: 2px;
+                }
+
+                @keyframes modal-backdrop-in {
+                    from {
+                        opacity: 0;
+                    }
+
+                    to {
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes modal-panel-in {
+                    from {
+                        opacity: 0;
+                        transform: translateY(0.5rem) scale(0.98);
+                    }
+
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    [data-confirmation-modal],
+                    [data-confirmation-modal] .modal-panel {
+                        animation: none;
+                    }
                 }
             </style>
         @endif
@@ -234,26 +361,36 @@
             aria-modal="true"
             aria-labelledby="confirmation-modal-title"
         >
-            <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-                <h2 id="confirmation-modal-title" class="text-lg font-semibold text-gray-900">
-                    Confirm your details
-                </h2>
-                <p class="mt-2 text-sm text-gray-600">
-                    Please review your details before sending. Is everything correct?
-                </p>
+            <div class="modal-panel w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/5">
+                <div class="modal-header flex items-start gap-4">
+                    <span class="modal-icon flex h-11 w-11 flex-none items-center justify-center rounded-full bg-blue-50 text-blue-600" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 12l2 2 4-4" />
+                            <circle cx="12" cy="12" r="9" />
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 id="confirmation-modal-title" class="modal-title text-lg font-semibold text-gray-900">
+                            Confirm your details
+                        </h2>
+                        <p class="modal-description mt-1 text-sm text-gray-600">
+                            Please review your details before sending. Is everything correct?
+                        </p>
+                    </div>
+                </div>
 
-                <dl class="mt-4 space-y-2 text-sm">
-                    <div class="flex items-start justify-between gap-4">
+                <dl class="modal-summary mt-5 text-sm">
+                    <div class="modal-summary-row">
                         <dt class="font-medium text-gray-500">Name</dt>
-                        <dd class="text-right text-gray-900" data-confirmation-summary="name"></dd>
+                        <dd class="font-medium text-gray-900" data-confirmation-summary="name"></dd>
                     </div>
-                    <div class="flex items-start justify-between gap-4">
+                    <div class="modal-summary-row">
                         <dt class="font-medium text-gray-500">Email</dt>
-                        <dd class="text-right text-gray-900" data-confirmation-summary="email"></dd>
+                        <dd class="font-medium text-gray-900" data-confirmation-summary="email"></dd>
                     </div>
-                    <div class="flex items-start justify-between gap-4">
+                    <div class="modal-summary-row">
                         <dt class="font-medium text-gray-500">Mobile</dt>
-                        <dd class="text-right text-gray-900" data-confirmation-summary="mobile"></dd>
+                        <dd class="font-medium text-gray-900" data-confirmation-summary="mobile"></dd>
                     </div>
                 </dl>
 
@@ -261,14 +398,14 @@
                     <button
                         type="button"
                         data-confirmation-cancel
-                        class="modal-cancel rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        class="modal-cancel rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
                         data-confirmation-confirm
-                        class="modal-confirm rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                        class="modal-confirm rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
                     >
                         Yes, send
                     </button>
