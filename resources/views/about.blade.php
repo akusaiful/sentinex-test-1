@@ -44,12 +44,13 @@
                     display: inline-block;
                     margin-bottom: 2rem;
                     font-size: 0.875rem;
-                    color: var(--muted);
+                    color: #ffffff;
                     text-decoration: none;
                 }
 
                 .back:hover {
-                    color: var(--accent);
+                    color: #ffffff;
+                    text-decoration: underline;
                 }
 
                 .card {
