@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="dark">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>{{ config('app.name', 'Sentigate') }}</title>
+
+        <!-- Apply the persisted color theme before paint to avoid a flash -->
+        <script>
+            (function () {
+                var theme = 'dark';
+
+                try {
+                    theme = localStorage.getItem('sg-theme') === 'light' ? 'light' : 'dark';
+                } catch (e) {}
+
+                document.documentElement.setAttribute('data-theme', theme);
+            })();
+        </script>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -541,6 +554,146 @@
                     animation: none;
                 }
             }
+
+            /* Light theme (opt-in via html[data-theme='light']) */
+            html[data-theme='light'] {
+                --sg-bg: #f4f6fb;
+                --sg-text: #10152a;
+                --sg-muted: #4b5568;
+                --sg-border: rgba(15, 23, 42, 0.12);
+            }
+
+            html[data-theme='light'] body.sg-page {
+                color: var(--sg-text);
+                background-color: var(--sg-bg);
+                background-image:
+                    radial-gradient(60rem 40rem at 15% -10%, rgba(34, 211, 238, 0.16), transparent 60%),
+                    radial-gradient(50rem 35rem at 95% 0%, rgba(129, 140, 248, 0.18), transparent 55%),
+                    radial-gradient(40rem 40rem at 50% 120%, rgba(232, 121, 249, 0.12), transparent 60%),
+                    linear-gradient(160deg, #f8fafc 0%, #eef2ff 55%, #fdf4ff 100%);
+            }
+
+            html[data-theme='light'] body.bg-gradient-to-br {
+                background-image: linear-gradient(to bottom right, #FDFDFC, #f4efec, #e9dfd8);
+            }
+
+            html[data-theme='light'] body.sg-page .main-nav {
+                background: rgba(255, 255, 255, 0.72);
+                box-shadow: 0 20px 45px -30px rgba(34, 211, 238, 0.5);
+            }
+
+            html[data-theme='light'] body.sg-page .nav-link,
+            html[data-theme='light'] body.sg-page .theme-toggle {
+                color: #334155;
+            }
+
+            html[data-theme='light'] body.sg-page .nav-link:hover,
+            html[data-theme='light'] body.sg-page .theme-toggle:hover {
+                color: #0f172a;
+                background: rgba(34, 211, 238, 0.12);
+            }
+
+            html[data-theme='light'] .sg-hero {
+                background-image:
+                    radial-gradient(38rem 22rem at 118% -20%, rgba(129, 140, 248, 0.28), transparent 62%),
+                    radial-gradient(30rem 20rem at -12% 122%, rgba(34, 211, 238, 0.22), transparent 58%),
+                    linear-gradient(150deg, #ffffff 0%, #eef2ff 58%, #fdf4ff 100%);
+            }
+
+            html[data-theme='light'] .sg-card,
+            html[data-theme='light'] .sg-map {
+                background-image:
+                    radial-gradient(30rem 20rem at 90% -12%, rgba(34, 211, 238, 0.14), transparent 62%),
+                    radial-gradient(24rem 18rem at -8% 120%, rgba(129, 140, 248, 0.14), transparent 60%),
+                    linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.7));
+            }
+
+            html[data-theme='light'] .sg-title {
+                background: linear-gradient(100deg, #0f172a, #4338ca 55%, #a21caf);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+
+            html[data-theme='light'] .sg-h2 {
+                color: #0f172a;
+            }
+
+            html[data-theme='light'] .sg-lede,
+            html[data-theme='light'] .sg-muted {
+                color: #475569;
+            }
+
+            html[data-theme='light'] .sg-list-item {
+                color: #334155;
+            }
+
+            html[data-theme='light'] .sg-badge {
+                color: #0e7490;
+            }
+
+            html[data-theme='light'] .sg-btn-ghost {
+                color: #334155;
+                border-color: rgba(15, 23, 42, 0.2);
+                background: rgba(255, 255, 255, 0.6);
+            }
+
+            html[data-theme='light'] .sg-map-canvas {
+                background: rgba(255, 255, 255, 0.85);
+            }
+
+            html[data-theme='light'] .sg-map-canvas .leaflet-tile-pane {
+                filter: none;
+            }
+
+            /* Theme toggle button */
+            .theme-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.4rem;
+                white-space: nowrap;
+                padding: 0.4rem 1.15rem;
+                border: 1px solid rgba(148, 163, 184, 0.2);
+                border-radius: 9999px;
+                background: rgba(255, 255, 255, 0.04);
+                color: #cbd5e1;
+                font-family: inherit;
+                font-size: 0.875rem;
+                line-height: 1.5;
+                cursor: pointer;
+                transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease,
+                    box-shadow 0.18s ease;
+            }
+
+            .theme-toggle:hover {
+                color: #ffffff;
+                border-color: rgba(34, 211, 238, 0.6);
+                background: rgba(34, 211, 238, 0.08);
+            }
+
+            .theme-toggle:focus-visible {
+                outline: 2px solid var(--sg-accent);
+                outline-offset: 2px;
+            }
+
+            .theme-toggle-icon {
+                display: none;
+                width: 1rem;
+                height: 1rem;
+            }
+
+            .theme-toggle-icon-moon {
+                display: inline-block;
+            }
+
+            html[data-theme='light'] .theme-toggle-icon-moon {
+                display: none;
+            }
+
+            html[data-theme='light'] .theme-toggle-icon-sun {
+                display: inline-block;
+            }
         </style>
     </head>
     <body class="sg-page bg-gradient-to-br bg-linear-to-br from-[#FDFDFC] via-[#f4efec] to-[#e9dfd8] dark:from-[#0a0a0a] dark:via-[#160f0d] dark:to-[#241009] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
@@ -550,6 +703,7 @@
                 ['label' => 'Home', 'url' => route('home'), 'pattern' => 'home'],
                 ['label' => 'About', 'url' => url('/about'), 'pattern' => 'about'],
                 ['label' => 'Contact', 'url' => route('contact.create'), 'pattern' => 'contact.create'],
+                ['label' => 'Registration', 'url' => route('register.create'), 'pattern' => 'register.create', 'class' => 'nav-link nav-link-register'],
             ];
         @endphp
         <header class="sg-header">
@@ -559,11 +713,28 @@
                     <a
                         href="{{ $item['url'] }}"
                         @if ($isActive) aria-current="page" @endif
-                        class="{{ $navLinkBase }}"
+                        class="{{ $item['class'] ?? $navLinkBase }}"
                     >
                         {{ $item['label'] }}
                     </a>
                 @endforeach
+                <button
+                    type="button"
+                    id="theme-toggle"
+                    class="theme-toggle"
+                    aria-pressed="false"
+                    aria-label="Switch to light theme"
+                    title="Toggle dark or light theme"
+                >
+                    <svg class="theme-toggle-icon theme-toggle-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+                    </svg>
+                    <svg class="theme-toggle-icon theme-toggle-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="4" />
+                        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+                    </svg>
+                    <span class="theme-toggle-text">Theme</span>
+                </button>
             </nav>
         </header>
         <main class="sg-main">
@@ -668,6 +839,49 @@
                         '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
                 }).addTo(map);
             });
+        </script>
+        <script>
+            (function () {
+                var storageKey = 'sg-theme';
+                var root = document.documentElement;
+                var toggle = document.getElementById('theme-toggle');
+
+                function currentTheme() {
+                    return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+                }
+
+                function syncToggle(theme) {
+                    if (!toggle) {
+                        return;
+                    }
+
+                    var isLight = theme === 'light';
+                    var label = isLight ? 'Switch to dark theme' : 'Switch to light theme';
+
+                    toggle.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+                    toggle.setAttribute('aria-label', label);
+                    toggle.setAttribute('title', label);
+                }
+
+                function apply(theme) {
+                    root.setAttribute('data-theme', theme);
+                    syncToggle(theme);
+                }
+
+                syncToggle(currentTheme());
+
+                if (toggle) {
+                    toggle.addEventListener('click', function () {
+                        var next = currentTheme() === 'light' ? 'dark' : 'light';
+
+                        apply(next);
+
+                        try {
+                            localStorage.setItem(storageKey, next);
+                        } catch (e) {}
+                    });
+                }
+            })();
         </script>
     </body>
 </html>
