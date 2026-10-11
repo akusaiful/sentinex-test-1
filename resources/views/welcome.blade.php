@@ -822,14 +822,80 @@
                     }
                 }
 
-                .nav-menu .nav-link {
+                /* Plain stacked vertical nav: drop all box/border/button chrome. */
+                body.sg-page .nav-menu .nav-link {
                     width: 100%;
+                    justify-content: flex-start;
+                    padding: 0.7rem 0.25rem;
+                    border: none;
+                    border-radius: 0;
+                    background: transparent;
+                    box-shadow: none;
+                    text-align: left;
+                    font-size: 1rem;
+                    color: #e2e8f5;
+                }
+
+                body.sg-page .nav-menu .nav-link:hover,
+                body.sg-page .nav-menu .nav-link:focus-visible {
+                    color: #ffffff;
+                    border-color: transparent;
+                    background: transparent;
+                    box-shadow: none;
+                }
+
+                body.sg-page .nav-menu .nav-link[aria-current='page'] {
+                    color: #67e8f9;
+                    border: none;
+                    background: none;
+                    box-shadow: none;
+                }
+
+                /* The theme toggle stays reachable but reads as a plain nav item. */
+                body.sg-page .theme-toggle {
+                    padding: 0.7rem 0.25rem;
+                    border: none;
+                    border-radius: 0;
+                    background: transparent;
+                    color: #e2e8f5;
+                }
+
+                body.sg-page .theme-toggle:hover,
+                body.sg-page .theme-toggle:focus-visible {
+                    border-color: transparent;
+                    background: transparent;
+                    color: #ffffff;
                 }
 
                 html[data-theme='light'] body.sg-page .nav-menu {
                     background: rgba(255, 255, 255, 0.96);
                     border-right-color: rgba(15, 23, 42, 0.12);
                     box-shadow: 0 30px 80px -40px rgba(15, 23, 42, 0.35);
+                }
+
+                html[data-theme='light'] body.sg-page .nav-menu .nav-link {
+                    color: #1e293b;
+                }
+
+                html[data-theme='light'] body.sg-page .nav-menu .nav-link:hover,
+                html[data-theme='light'] body.sg-page .nav-menu .nav-link:focus-visible {
+                    color: #0f172a;
+                    background: transparent;
+                }
+
+                html[data-theme='light'] body.sg-page .nav-menu .nav-link[aria-current='page'] {
+                    color: #0e7490;
+                    background: none;
+                }
+
+                html[data-theme='light'] body.sg-page .theme-toggle {
+                    color: #1e293b;
+                }
+
+                html[data-theme='light'] body.sg-page .theme-toggle:hover,
+                html[data-theme='light'] body.sg-page .theme-toggle:focus-visible {
+                    color: #0f172a;
+                    background: transparent;
                 }
             }
 
