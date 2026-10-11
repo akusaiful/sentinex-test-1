@@ -20,7 +20,7 @@ class RegisterStoreTest extends TestCase
             'password_confirmation' => 'secret-password',
         ]);
 
-        $response->assertRedirect(route('register.create'));
+        $response->assertRedirect(route('register.success'));
 
         $this->assertDatabaseHas('users', [
             'name' => 'Jane Doe',
