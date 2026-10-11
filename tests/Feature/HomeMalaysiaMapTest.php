@@ -15,20 +15,30 @@ class HomeMalaysiaMapTest extends TestCase
         $response->assertSee('Across Malaysia');
     }
 
-    public function test_map_section_renders_an_inline_svg_malaysia_outline(): void
+    public function test_map_section_renders_a_leaflet_map_container(): void
     {
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        $response->assertSee('<svg class="sg-map-svg"', false);
-        $response->assertSee('viewBox="0 0 400 260"', false);
-        $response->assertSee('class="sg-map-land"', false);
-        $response->assertSee('Map of Malaysia');
+        $response->assertSee('id="malaysia-map"', false);
+        $response->assertSee('class="sg-map-canvas"', false);
+    }
+
+    public function test_map_section_loads_leaflet_from_a_pinned_cdn_and_centres_on_malaysia(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
 
         $html = $response->getContent();
-        $this->assertGreaterThanOrEqual(2, substr_count($html, 'sg-map-land'));
-        $this->assertStringContainsString('<path d="M88 40', $html);
-        $this->assertStringContainsString('<path d="M196 150', $html);
+
+        $this->assertStringContainsString('cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css', $html);
+        $this->assertStringContainsString('cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js', $html);
+        $this->assertStringContainsString('tile.openstreetmap.org', $html);
+        $this->assertStringContainsString('L.map(', $html);
+        $this->assertStringContainsString('data-map-lat="4.2"', $html);
+        $this->assertStringContainsString('data-map-lng="109"', $html);
+        $this->assertStringContainsString('data-map-zoom="6"', $html);
     }
 
     public function test_map_section_matches_the_sentigate_theme(): void

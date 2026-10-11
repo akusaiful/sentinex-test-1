@@ -10,6 +10,14 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
+        <!-- Leaflet (CDN, pinned, no build step) -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""
+        />
+
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -408,43 +416,22 @@
                 pointer-events: none;
             }
 
-            .sg-map-svg {
+            .sg-map-canvas {
                 position: relative;
                 z-index: 1;
-                display: block;
                 width: 100%;
-                height: auto;
-                max-width: 32rem;
+                min-height: 18rem;
+                height: 22rem;
+                border-radius: 1rem;
+                overflow: hidden;
+                border: 1px solid var(--sg-border);
+                background: rgba(5, 8, 22, 0.65);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 30px 70px -50px rgba(34, 211, 238, 0.85);
             }
 
-            .sg-map-land {
-                fill: url(#sgMapFill);
-                stroke: var(--sg-accent);
-                stroke-width: 1.2;
-                stroke-linejoin: round;
-                stroke-linecap: round;
-                filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.55));
-            }
-
-            .sg-map-marker {
-                fill: var(--sg-accent);
-                filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.95));
-                transform-origin: center;
-                transform-box: fill-box;
-                animation: sg-map-pulse 3.2s ease-in-out infinite;
-            }
-
-            @keyframes sg-map-pulse {
-                0%,
-                100% {
-                    opacity: 1;
-                    transform: scale(1);
-                }
-
-                50% {
-                    opacity: 0.55;
-                    transform: scale(1.35);
-                }
+            .sg-map-canvas.leaflet-container {
+                font-family: inherit;
+                background: rgba(5, 8, 22, 0.65);
             }
 
             .sg-orb {
@@ -512,8 +499,7 @@
             }
 
             @media (prefers-reduced-motion: reduce) {
-                .sg-orb,
-                .sg-map-marker {
+                .sg-orb {
                     animation: none;
                 }
             }
@@ -599,24 +585,51 @@
                         </ul>
                     </div>
                     <figure class="sg-map-figure">
-                        <svg class="sg-map-svg" viewBox="0 0 400 260" role="img" aria-labelledby="malaysia-map-svg-title" preserveAspectRatio="xMidYMid meet">
-                            <title id="malaysia-map-svg-title">Map of Malaysia</title>
-                            <defs>
-                                <linearGradient id="sgMapFill" x1="0" y1="0" x2="1" y2="1">
-                                    <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.38" />
-                                    <stop offset="55%" stop-color="#818cf8" stop-opacity="0.3" />
-                                    <stop offset="100%" stop-color="#e879f9" stop-opacity="0.24" />
-                                </linearGradient>
-                            </defs>
-                            <g class="sg-map-land">
-                                <path d="M88 40 L106 45 L112 60 L118 78 L124 97 L128 117 L130 138 L127 158 L121 176 L113 192 L103 206 L97 214 L90 205 L84 189 L80 171 L78 151 L79 130 L81 110 L85 90 L87 70 Z" />
-                                <path d="M196 150 L208 138 L219 127 L230 119 L244 111 L251 117 L257 112 L269 101 L283 93 L297 91 L308 97 L316 109 L320 123 L318 137 L322 151 L314 165 L302 173 L288 181 L272 185 L254 183 L238 177 L222 169 L208 161 Z" />
-                            </g>
-                            <circle class="sg-map-marker" cx="95" cy="150" r="4" />
-                        </svg>
+                        <div
+                            id="malaysia-map"
+                            class="sg-map-canvas"
+                            role="region"
+                            aria-label="Interactive map of Malaysia"
+                            data-map-lat="4.2"
+                            data-map-lng="109"
+                            data-map-zoom="6"
+                        ></div>
                     </figure>
                 </div>
             </section>
         </main>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""
+        ></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var el = document.getElementById('malaysia-map');
+
+                if (!el || typeof L === 'undefined') {
+                    return;
+                }
+
+                var map = L.map(el, {
+                    center: [parseFloat(el.dataset.mapLat), parseFloat(el.dataset.mapLng)],
+                    zoom: parseInt(el.dataset.mapZoom, 10),
+                    zoomControl: true,
+                    dragging: true,
+                    scrollWheelZoom: true,
+                    doubleClickZoom: true,
+                    boxZoom: true,
+                    keyboard: true,
+                    touchZoom: true,
+                });
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution:
+                        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+                }).addTo(map);
+            });
+        </script>
     </body>
 </html>
