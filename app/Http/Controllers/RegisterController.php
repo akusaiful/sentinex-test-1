@@ -18,6 +18,14 @@ class RegisterController extends Controller
     }
 
     /**
+     * Show the registration success page.
+     */
+    public function success(): View
+    {
+        return view('register-success');
+    }
+
+    /**
      * Store a newly registered user pending admin approval.
      */
     public function store(Request $request): RedirectResponse
@@ -36,7 +44,7 @@ class RegisterController extends Controller
         ]);
 
         return redirect()
-            ->route('register.create')
+            ->route('register.success')
             ->with('status', 'Your account has been created and is awaiting admin approval.');
     }
 }

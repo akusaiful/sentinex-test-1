@@ -100,7 +100,7 @@ class RegisterConfirmationTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        $response->assertRedirect(route('register.create'));
+        $response->assertRedirect(route('register.success'));
         $this->assertDatabaseHas('users', [
             'email' => 'modal@example.com',
         ]);
