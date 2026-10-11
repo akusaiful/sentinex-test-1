@@ -1,4 +1,4 @@
-# Production image for Coolify (main deploys and PR previews). SQLite, no external services.
+# Production image for Coolify (main deploys and PR previews). Uses MySQL via docker-compose.
 FROM composer:2 AS vendor
 WORKDIR /app
 COPY composer.json composer.lock ./
@@ -7,7 +7,7 @@ COPY . .
 RUN composer dump-autoload --optimize --no-dev --no-scripts
 
 FROM dunglas/frankenphp:1-php8.3
-RUN install-php-extensions pdo_sqlite intl zip opcache
+RUN install-php-extensions pdo_mysql intl zip opcache
 WORKDIR /app
 COPY --from=vendor /app /app
 ENV SERVER_NAME=:80 APP_ENV=production LOG_CHANNEL=stderr
