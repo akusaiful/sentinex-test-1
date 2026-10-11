@@ -583,12 +583,14 @@
             }
 
             html[data-theme='light'] body.sg-page .nav-link,
-            html[data-theme='light'] body.sg-page .theme-toggle {
+            html[data-theme='light'] body.sg-page .theme-toggle,
+            html[data-theme='light'] body.sg-page .nav-toggle {
                 color: #334155;
             }
 
             html[data-theme='light'] body.sg-page .nav-link:hover,
-            html[data-theme='light'] body.sg-page .theme-toggle:hover {
+            html[data-theme='light'] body.sg-page .theme-toggle:hover,
+            html[data-theme='light'] body.sg-page .nav-toggle:hover {
                 color: #0f172a;
                 background: rgba(34, 211, 238, 0.12);
             }
@@ -694,6 +696,84 @@
             html[data-theme='light'] .theme-toggle-icon-sun {
                 display: inline-block;
             }
+
+            /* Hamburger navigation (mobile only) */
+            .nav-toggle {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 0.28rem;
+                width: 2.5rem;
+                height: 2.5rem;
+                padding: 0;
+                border: 1px solid rgba(148, 163, 184, 0.2);
+                border-radius: 9999px;
+                background: rgba(255, 255, 255, 0.04);
+                color: #cbd5e1;
+                cursor: pointer;
+                transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+            }
+
+            .nav-toggle:hover {
+                color: #ffffff;
+                border-color: rgba(34, 211, 238, 0.6);
+                background: rgba(34, 211, 238, 0.08);
+            }
+
+            .nav-toggle:focus-visible {
+                outline: 2px solid var(--sg-accent);
+                outline-offset: 2px;
+            }
+
+            .nav-toggle-bar {
+                display: block;
+                width: 1.1rem;
+                height: 2px;
+                border-radius: 9999px;
+                background: currentColor;
+            }
+
+            .nav-menu {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            @media (max-width: 767px) {
+                body.sg-page .main-nav {
+                    justify-content: space-between;
+                }
+
+                .nav-toggle {
+                    display: inline-flex;
+                    order: 1;
+                }
+
+                .theme-toggle {
+                    order: 2;
+                }
+
+                .nav-menu {
+                    order: 3;
+                    display: none;
+                    flex-direction: column;
+                    align-items: stretch;
+                    width: 100%;
+                    gap: 0.5rem;
+                    padding-top: 0.5rem;
+                }
+
+                .nav-menu.is-open {
+                    display: flex;
+                }
+
+                .nav-menu .nav-link {
+                    width: 100%;
+                }
+            }
         </style>
     </head>
     <body class="sg-page bg-gradient-to-br bg-linear-to-br from-[#FDFDFC] via-[#f4efec] to-[#e9dfd8] dark:from-[#0a0a0a] dark:via-[#160f0d] dark:to-[#241009] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
@@ -708,16 +788,30 @@
         @endphp
         <header class="sg-header">
             <nav class="main-nav flex flex-wrap items-center justify-center gap-3" aria-label="Main navigation">
-                @foreach ($navItems as $item)
-                    @php($isActive = request()->routeIs($item['pattern']))
-                    <a
-                        href="{{ $item['url'] }}"
-                        @if ($isActive) aria-current="page" @endif
-                        class="{{ $item['class'] ?? $navLinkBase }}"
-                    >
-                        {{ $item['label'] }}
-                    </a>
-                @endforeach
+                <button
+                    type="button"
+                    id="nav-toggle"
+                    class="nav-toggle"
+                    aria-expanded="false"
+                    aria-controls="primary-menu"
+                    aria-label="Open navigation menu"
+                >
+                    <span class="nav-toggle-bar" aria-hidden="true"></span>
+                    <span class="nav-toggle-bar" aria-hidden="true"></span>
+                    <span class="nav-toggle-bar" aria-hidden="true"></span>
+                </button>
+                <div id="primary-menu" class="nav-menu">
+                    @foreach ($navItems as $item)
+                        @php($isActive = request()->routeIs($item['pattern']))
+                        <a
+                            href="{{ $item['url'] }}"
+                            @if ($isActive) aria-current="page" @endif
+                            class="{{ $item['class'] ?? $navLinkBase }}"
+                        >
+                            {{ $item['label'] }}
+                        </a>
+                    @endforeach
+                </div>
                 <button
                     type="button"
                     id="theme-toggle"
@@ -839,6 +933,38 @@
                         '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
                 }).addTo(map);
             });
+        </script>
+        <script>
+            (function () {
+                var toggle = document.getElementById('nav-toggle');
+                var menu = document.getElementById('primary-menu');
+
+                if (!toggle || !menu) {
+                    return;
+                }
+
+                function setOpen(isOpen) {
+                    menu.classList.toggle('is-open', isOpen);
+                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    toggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+                }
+
+                toggle.addEventListener('click', function () {
+                    setOpen(!menu.classList.contains('is-open'));
+                });
+
+                menu.addEventListener('click', function (event) {
+                    if (event.target.closest('a')) {
+                        setOpen(false);
+                    }
+                });
+
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') {
+                        setOpen(false);
+                    }
+                });
+            })();
         </script>
         <script>
             (function () {
