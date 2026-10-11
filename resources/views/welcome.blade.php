@@ -27,12 +27,34 @@
                         background-image: linear-gradient(to bottom right, #0a0a0a, #160f0d, #241009);
                     }
                 }
+
+                .main-nav {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.75rem;
+                }
+
+                .nav-link {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    white-space: nowrap;
+                    padding: 0.375rem 1.25rem;
+                    border-width: 1px;
+                    border-style: solid;
+                    border-radius: 0.125rem;
+                    font-size: 0.875rem;
+                    line-height: 1.5;
+                    text-align: center;
+                }
             </style>
         @endif
     </head>
     <body class="bg-gradient-to-br bg-linear-to-br from-[#FDFDFC] via-[#f4efec] to-[#e9dfd8] dark:from-[#0a0a0a] dark:via-[#160f0d] dark:to-[#241009] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
         @php
-            $navLinkBase = 'inline-block px-3 py-1.5 sm:px-5 rounded-sm border text-sm leading-normal transition-colors';
+            $navLinkBase = 'nav-link inline-flex items-center justify-center px-5 py-1.5 rounded-sm border text-sm leading-normal transition-colors';
             $navLinkActive = 'bg-[#1b1b18] text-white border-black dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:border-[#eeeeec]';
             $navLinkInactive = 'text-[#1b1b18] border-[#19140035] hover:border-[#1915014a] dark:text-[#EDEDEC] dark:border-[#3E3E3A] dark:hover:border-[#62605b]';
             $navItems = [
@@ -42,7 +64,7 @@
             ];
         @endphp
         <header class="w-full max-w-[335px] lg:max-w-4xl mb-6">
-            <nav class="flex flex-wrap items-center justify-center gap-2 sm:gap-3" aria-label="Main navigation">
+            <nav class="main-nav flex flex-wrap items-center justify-center gap-3" aria-label="Main navigation">
                 @foreach ($navItems as $item)
                     @php($isActive = request()->routeIs($item['pattern']))
                     <a
