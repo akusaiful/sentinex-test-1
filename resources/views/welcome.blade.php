@@ -49,6 +49,96 @@
                     line-height: 1.5;
                     text-align: center;
                 }
+
+                .sentigate-hero {
+                    position: relative;
+                    overflow: hidden;
+                    border-radius: 1rem;
+                    padding: 2.5rem 1.5rem;
+                    color: #f8fafc;
+                    background:
+                        radial-gradient(circle at 18% 18%, rgba(34, 211, 238, 0.28), transparent 55%),
+                        radial-gradient(circle at 85% 0%, rgba(168, 85, 247, 0.30), transparent 52%),
+                        linear-gradient(135deg, #0b1020 0%, #111827 48%, #1e1b4b 100%);
+                    box-shadow:
+                        0 0 42px rgba(34, 211, 238, 0.18),
+                        inset 0 0 0 1px rgba(148, 163, 184, 0.18);
+                }
+
+                .sentigate-hero-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.35rem 0.85rem;
+                    border-radius: 9999px;
+                    border: 1px solid rgba(103, 232, 249, 0.35);
+                    background: rgba(8, 51, 68, 0.55);
+                    color: #a5f3fc;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    letter-spacing: 0.18em;
+                    text-transform: uppercase;
+                    box-shadow: 0 0 18px rgba(34, 211, 238, 0.35);
+                }
+
+                .sentigate-hero-title {
+                    margin: 1.25rem 0 0;
+                    font-size: 2.25rem;
+                    line-height: 1.05;
+                    font-weight: 700;
+                    letter-spacing: -0.02em;
+                    color: #ffffff;
+                }
+
+                .sentigate-hero-description {
+                    margin: 1rem 0 0;
+                    max-width: 36rem;
+                    font-size: 1rem;
+                    line-height: 1.6;
+                    color: #cbd5e1;
+                }
+
+                .sentigate-hero-cta {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-top: 2rem;
+                    padding: 0.75rem 1.75rem;
+                    border-radius: 0.5rem;
+                    color: #04121f;
+                    font-size: 0.95rem;
+                    font-weight: 600;
+                    text-decoration: none;
+                    background: linear-gradient(to right, #22d3ee, #a855f7);
+                    box-shadow: 0 0 24px rgba(34, 211, 238, 0.5);
+                    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+                }
+
+                .sentigate-hero-cta:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 0 34px rgba(168, 85, 247, 0.65);
+                    filter: brightness(1.06);
+                }
+
+                .sentigate-hero-cta:focus-visible {
+                    outline: 2px solid #67e8f9;
+                    outline-offset: 3px;
+                    box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.35);
+                }
+
+                @media (min-width: 1024px) {
+                    .sentigate-hero {
+                        padding: 4rem 3rem;
+                    }
+
+                    .sentigate-hero-title {
+                        font-size: 3.75rem;
+                    }
+
+                    .sentigate-hero-description {
+                        font-size: 1.125rem;
+                    }
+                }
             </style>
         @endif
     </head>
@@ -77,6 +167,29 @@
                 @endforeach
             </nav>
         </header>
+        <section
+            class="sentigate-hero relative w-full max-w-[335px] lg:max-w-4xl mb-6 overflow-hidden rounded-2xl bg-gradient-to-br bg-linear-to-br from-[#0b1020] via-[#111827] to-[#1e1b4b] p-10 lg:p-16 text-left text-white shadow-[0_0_42px_rgba(34,211,238,0.18)]"
+            aria-labelledby="sentigate-hero-title"
+        >
+            <span class="sentigate-hero-badge inline-flex items-center gap-2 rounded-full border border-cyan-300/40 bg-cyan-950/60 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200 shadow-[0_0_18px_rgba(34,211,238,0.35)]">Sentigate</span>
+            <h1 id="sentigate-hero-title" class="sentigate-hero-title mt-5 text-4xl font-bold leading-none tracking-tight text-white lg:text-6xl">Meet Sentigate</h1>
+            <p class="sentigate-hero-description mt-4 max-w-xl text-base leading-relaxed text-slate-300 lg:text-lg">
+                A modern gateway experience for your application.
+            </p>
+            <a href="{{ route('contact.create') }}" class="sentigate-hero-cta mt-8 inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-400 to-purple-500 px-7 py-3 text-sm font-semibold text-[#04121f] shadow-[0_0_24px_rgba(34,211,238,0.5)] transition hover:-translate-y-0.5 hover:shadow-[0_0_34px_rgba(168,85,247,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300">
+                Get started
+                <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                >
+                    <path d="M2.5 7H11.5M11.5 7L7.5 3M11.5 7L7.5 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </a>
+        </section>
         <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
             <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
                 <div class="text-[13px] leading-[20px] flex-1 p-6 pb-12 lg:p-20 bg-white dark:bg-[#161615] dark:text-[#EDEDEC] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d] rounded-bl-lg rounded-br-lg lg:rounded-tl-lg lg:rounded-br-none">
