@@ -34,11 +34,27 @@ class HomeMalaysiaMapTest extends TestCase
 
         $this->assertStringContainsString('cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css', $html);
         $this->assertStringContainsString('cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js', $html);
-        $this->assertStringContainsString('tile.openstreetmap.org', $html);
+        $this->assertStringContainsString('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', $html);
+        $this->assertStringNotContainsString('tile.openstreetmap.org', $html);
         $this->assertStringContainsString('L.map(', $html);
         $this->assertStringContainsString('data-map-lat="4.2"', $html);
         $this->assertStringContainsString('data-map-lng="109"', $html);
         $this->assertStringContainsString('data-map-zoom="6"', $html);
+    }
+
+    public function test_map_section_uses_dark_themed_tiles_and_controls(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+
+        $html = $response->getContent();
+
+        $this->assertStringContainsString('dark_all', $html);
+        $this->assertStringContainsString('cartocdn.com', $html);
+        $this->assertStringContainsString('.sg-map-canvas.leaflet-container .leaflet-bar a', $html);
+        $this->assertStringContainsString('.sg-map-canvas.leaflet-container .leaflet-control-attribution', $html);
+        $this->assertStringContainsString('rgba(5, 8, 22, 0.85)', $html);
     }
 
     public function test_map_section_matches_the_sentigate_theme(): void

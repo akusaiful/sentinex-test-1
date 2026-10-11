@@ -434,6 +434,42 @@
                 background: rgba(5, 8, 22, 0.65);
             }
 
+            .sg-map-canvas.leaflet-container .leaflet-control-zoom,
+            .sg-map-canvas.leaflet-container .leaflet-bar {
+                border: 1px solid var(--sg-border);
+                border-radius: 0.6rem;
+                overflow: hidden;
+                box-shadow: 0 18px 40px -30px rgba(34, 211, 238, 0.9);
+            }
+
+            .sg-map-canvas.leaflet-container .leaflet-bar a,
+            .sg-map-canvas.leaflet-container .leaflet-bar a:hover,
+            .sg-map-canvas.leaflet-container .leaflet-bar a:focus {
+                background: rgba(5, 8, 22, 0.85);
+                border-bottom: 1px solid var(--sg-border);
+                color: #e0f2fe;
+            }
+
+            .sg-map-canvas.leaflet-container .leaflet-bar a:hover,
+            .sg-map-canvas.leaflet-container .leaflet-bar a:focus {
+                background: rgba(34, 211, 238, 0.16);
+                color: var(--sg-accent);
+            }
+
+            .sg-map-canvas.leaflet-container .leaflet-bar a:last-child {
+                border-bottom: none;
+            }
+
+            .sg-map-canvas.leaflet-container .leaflet-control-attribution {
+                background: rgba(5, 8, 22, 0.72);
+                border-top-left-radius: 0.5rem;
+                color: rgba(226, 232, 240, 0.72);
+            }
+
+            .sg-map-canvas.leaflet-container .leaflet-control-attribution a {
+                color: var(--sg-accent);
+            }
+
             .sg-orb {
                 position: absolute;
                 width: 9rem;
@@ -624,10 +660,10 @@
                     touchZoom: true,
                 });
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                     maxZoom: 19,
                     attribution:
-                        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+                        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>',
                 }).addTo(map);
             });
         </script>
