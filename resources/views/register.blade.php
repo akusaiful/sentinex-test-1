@@ -228,6 +228,148 @@
                 border-radius: 2px;
             }
 
+            .sg-modal {
+                position: fixed;
+                inset: 0;
+                z-index: 50;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1rem;
+                background: rgba(5, 8, 22, 0.72);
+                -webkit-backdrop-filter: blur(6px);
+                backdrop-filter: blur(6px);
+                animation: sg-modal-backdrop-in 150ms ease-out;
+            }
+
+            .sg-modal.hidden {
+                display: none;
+            }
+
+            .sg-modal-panel {
+                width: 100%;
+                max-width: 28rem;
+                padding: 1.5rem;
+                border: 1px solid var(--sg-border);
+                border-radius: 1.25rem;
+                background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 40px 90px -50px rgba(34, 211, 238, 0.8);
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+                animation: sg-modal-panel-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .sg-modal-header {
+                display: flex;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .sg-modal-icon {
+                display: flex;
+                flex: none;
+                align-items: center;
+                justify-content: center;
+                width: 2.75rem;
+                height: 2.75rem;
+                border-radius: 9999px;
+                background: rgba(34, 211, 238, 0.12);
+                color: var(--sg-accent);
+            }
+
+            .sg-modal-icon svg {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
+            .sg-modal-title {
+                margin: 0;
+                font-size: 1.125rem;
+                line-height: 1.5rem;
+                font-weight: 600;
+                color: var(--sg-text);
+            }
+
+            .sg-modal-description {
+                margin: 0.25rem 0 0;
+                font-size: 0.875rem;
+                line-height: 1.35rem;
+                color: var(--sg-muted);
+            }
+
+            .sg-modal-summary {
+                margin: 1.25rem 0 0;
+                padding: 0;
+                list-style: none;
+                border: 1px solid var(--sg-border);
+                border-radius: 0.75rem;
+                background: rgba(255, 255, 255, 0.03);
+                overflow: hidden;
+            }
+
+            .sg-modal-summary-row {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                gap: 1rem;
+                padding: 0.625rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .sg-modal-summary-row + .sg-modal-summary-row {
+                border-top: 1px solid var(--sg-border);
+            }
+
+            .sg-modal-summary dt {
+                color: var(--sg-muted);
+                font-weight: 500;
+            }
+
+            .sg-modal-summary dd {
+                margin: 0;
+                color: var(--sg-text);
+                font-weight: 500;
+                text-align: right;
+                word-break: break-word;
+            }
+
+            .sg-modal-actions {
+                display: flex;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+                margin-top: 1.5rem;
+            }
+
+            @keyframes sg-modal-backdrop-in {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes sg-modal-panel-in {
+                from {
+                    opacity: 0;
+                    transform: translateY(0.5rem) scale(0.98);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .sg-modal,
+                .sg-modal-panel {
+                    animation: none;
+                }
+            }
+
             @media (min-width: 768px) {
                 .sg-card {
                     padding: 2.5rem;
@@ -287,5 +429,112 @@
                 </form>
             </section>
         </main>
+
+        <div
+            id="confirmation-modal"
+            data-confirmation-modal
+            class="sg-modal hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="confirmation-modal-title"
+        >
+            <div class="sg-modal-panel">
+                <div class="sg-modal-header">
+                    <span class="sg-modal-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 12l2 2 4-4" />
+                            <circle cx="12" cy="12" r="9" />
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 id="confirmation-modal-title" class="sg-modal-title">Confirm your details</h2>
+                        <p class="sg-modal-description">Please review your name and email before creating your account.</p>
+                    </div>
+                </div>
+
+                <dl class="sg-modal-summary">
+                    <div class="sg-modal-summary-row">
+                        <dt>Name</dt>
+                        <dd data-confirmation-summary="name"></dd>
+                    </div>
+                    <div class="sg-modal-summary-row">
+                        <dt>Email</dt>
+                        <dd data-confirmation-summary="email"></dd>
+                    </div>
+                </dl>
+
+                <div class="sg-modal-actions">
+                    <button type="button" data-confirmation-cancel class="sg-btn sg-btn-ghost">
+                        Cancel
+                    </button>
+                    <button type="button" data-confirmation-confirm class="sg-btn sg-btn-primary">
+                        Confirm &amp; create account
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function () {
+                var form = document.getElementById('register-form');
+                var modal = document.querySelector('[data-confirmation-modal]');
+
+                if (!form || !modal) {
+                    return;
+                }
+
+                var confirmButton = modal.querySelector('[data-confirmation-confirm]');
+                var cancelButton = modal.querySelector('[data-confirmation-cancel]');
+                var fields = ['name', 'email'];
+                var confirmed = false;
+
+                function openModal() {
+                    fields.forEach(function (field) {
+                        var input = form.querySelector('[name="' + field + '"]');
+                        var target = modal.querySelector('[data-confirmation-summary="' + field + '"]');
+
+                        if (input && target) {
+                            target.textContent = input.value;
+                        }
+                    });
+
+                    modal.classList.remove('hidden');
+                    confirmButton.focus();
+                }
+
+                function closeModal() {
+                    modal.classList.add('hidden');
+                }
+
+                form.addEventListener('submit', function (event) {
+                    if (confirmed) {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    openModal();
+                });
+
+                confirmButton.addEventListener('click', function () {
+                    confirmed = true;
+                    closeModal();
+                    form.submit();
+                });
+
+                cancelButton.addEventListener('click', closeModal);
+
+                modal.addEventListener('click', function (event) {
+                    if (event.target === modal) {
+                        closeModal();
+                    }
+                });
+
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') {
+                        closeModal();
+                    }
+                });
+            })();
+        </script>
     </body>
 </html>
