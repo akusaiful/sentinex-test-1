@@ -368,6 +368,85 @@
                     linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
             }
 
+            .sg-map {
+                position: relative;
+                overflow: hidden;
+                border-radius: 1.25rem;
+                border: 1px solid var(--sg-border);
+                padding: 1.75rem;
+                background-image:
+                    radial-gradient(30rem 20rem at 90% -12%, rgba(34, 211, 238, 0.24), transparent 62%),
+                    radial-gradient(24rem 18rem at -8% 120%, rgba(129, 140, 248, 0.22), transparent 60%),
+                    linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 40px 90px -60px rgba(34, 211, 238, 0.75);
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+            }
+
+            .sg-map-layout {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                align-items: center;
+            }
+
+            .sg-map-figure {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0;
+                min-height: 12rem;
+            }
+
+            .sg-map-figure::after {
+                content: '';
+                position: absolute;
+                inset: 12% 8%;
+                background: radial-gradient(closest-side, rgba(34, 211, 238, 0.28), transparent 72%);
+                filter: blur(30px);
+                pointer-events: none;
+            }
+
+            .sg-map-svg {
+                position: relative;
+                z-index: 1;
+                display: block;
+                width: 100%;
+                height: auto;
+                max-width: 32rem;
+            }
+
+            .sg-map-land {
+                fill: url(#sgMapFill);
+                stroke: var(--sg-accent);
+                stroke-width: 1.2;
+                stroke-linejoin: round;
+                stroke-linecap: round;
+                filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.55));
+            }
+
+            .sg-map-marker {
+                fill: var(--sg-accent);
+                filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.95));
+                transform-origin: center;
+                transform-box: fill-box;
+                animation: sg-map-pulse 3.2s ease-in-out infinite;
+            }
+
+            @keyframes sg-map-pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+
+                50% {
+                    opacity: 0.55;
+                    transform: scale(1.35);
+                }
+            }
+
             .sg-orb {
                 position: absolute;
                 width: 9rem;
@@ -415,6 +494,11 @@
                     grid-template-columns: 1.15fr 0.85fr;
                     gap: 1.5rem;
                 }
+
+                .sg-map-layout {
+                    grid-template-columns: 1.05fr 0.95fr;
+                    gap: 2rem;
+                }
             }
 
             @media (min-width: 1024px) {
@@ -428,7 +512,8 @@
             }
 
             @media (prefers-reduced-motion: reduce) {
-                .sg-orb {
+                .sg-orb,
+                .sg-map-marker {
                     animation: none;
                 }
             }
@@ -494,6 +579,42 @@
                 <div class="sg-card sg-card-visual" aria-hidden="true">
                     <div class="sg-orb"></div>
                     <span class="sg-mono">S</span>
+                </div>
+            </section>
+
+            <section id="malaysia" class="sg-map" aria-labelledby="malaysia-map-heading">
+                <div class="sg-map-layout">
+                    <div>
+                        <h2 id="malaysia-map-heading" class="sg-h2">Across Malaysia</h2>
+                        <p class="sg-muted">Malaysia is made up of Peninsular Malaysia and East Malaysia on the island of Borneo, separated by the South China Sea. Kuala Lumpur is the capital city.</p>
+                        <ul class="sg-list">
+                            <li class="sg-list-item">
+                                <span class="sg-dot" aria-hidden="true"></span>
+                                <span>Peninsular Malaysia</span>
+                            </li>
+                            <li class="sg-list-item">
+                                <span class="sg-dot" aria-hidden="true"></span>
+                                <span>East Malaysia (Borneo)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <figure class="sg-map-figure">
+                        <svg class="sg-map-svg" viewBox="0 0 400 260" role="img" aria-labelledby="malaysia-map-svg-title" preserveAspectRatio="xMidYMid meet">
+                            <title id="malaysia-map-svg-title">Map of Malaysia</title>
+                            <defs>
+                                <linearGradient id="sgMapFill" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.38" />
+                                    <stop offset="55%" stop-color="#818cf8" stop-opacity="0.3" />
+                                    <stop offset="100%" stop-color="#e879f9" stop-opacity="0.24" />
+                                </linearGradient>
+                            </defs>
+                            <g class="sg-map-land">
+                                <path d="M88 40 L106 45 L112 60 L118 78 L124 97 L128 117 L130 138 L127 158 L121 176 L113 192 L103 206 L97 214 L90 205 L84 189 L80 171 L78 151 L79 130 L81 110 L85 90 L87 70 Z" />
+                                <path d="M196 150 L208 138 L219 127 L230 119 L244 111 L251 117 L257 112 L269 101 L283 93 L297 91 L308 97 L316 109 L320 123 L318 137 L322 151 L314 165 L302 173 L288 181 L272 185 L254 183 L238 177 L222 169 L208 161 Z" />
+                            </g>
+                            <circle class="sg-map-marker" cx="95" cy="150" r="4" />
+                        </svg>
+                    </figure>
                 </div>
             </section>
         </main>
