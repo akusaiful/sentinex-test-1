@@ -455,6 +455,13 @@
                         {{ $item['label'] }}
                     </a>
                 @endforeach
+                <a
+                    href="{{ route('register') }}"
+                    @if (request()->routeIs('register')) aria-current="page" @endif
+                    class="nav-link nav-link-register inline-flex items-center justify-center"
+                >
+                    Register
+                </a>
             </nav>
         </header>
         <main class="sg-main">
