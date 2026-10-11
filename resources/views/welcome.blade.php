@@ -31,40 +31,29 @@
         @endif
     </head>
     <body class="bg-gradient-to-br bg-linear-to-br from-[#FDFDFC] via-[#f4efec] to-[#e9dfd8] dark:from-[#0a0a0a] dark:via-[#160f0d] dark:to-[#241009] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
-        <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
-            @if (Route::has('login'))
-                <nav class="flex items-center justify-end gap-4">
+        @php
+            $navLinkBase = 'inline-block px-3 py-1.5 sm:px-5 rounded-sm border text-sm leading-normal transition-colors';
+            $navLinkActive = 'bg-[#1b1b18] text-white border-black dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:border-[#eeeeec]';
+            $navLinkInactive = 'text-[#1b1b18] border-[#19140035] hover:border-[#1915014a] dark:text-[#EDEDEC] dark:border-[#3E3E3A] dark:hover:border-[#62605b]';
+            $navItems = [
+                ['label' => 'Home', 'url' => route('home'), 'pattern' => 'home'],
+                ['label' => 'About', 'url' => url('/about'), 'pattern' => 'about'],
+                ['label' => 'Contact', 'url' => route('contact.create'), 'pattern' => 'contact.create'],
+            ];
+        @endphp
+        <header class="w-full max-w-[335px] lg:max-w-4xl mb-6">
+            <nav class="flex flex-wrap items-center justify-center gap-2 sm:gap-3" aria-label="Main navigation">
+                @foreach ($navItems as $item)
+                    @php($isActive = request()->routeIs($item['pattern']))
                     <a
-                        href="{{ route('contact.create') }}"
-                        class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
+                        href="{{ $item['url'] }}"
+                        @if ($isActive) aria-current="page" @endif
+                        class="{{ $navLinkBase }} {{ $isActive ? $navLinkActive : $navLinkInactive }}"
                     >
-                        Contact
+                        {{ $item['label'] }}
                     </a>
-                    @auth
-                        <a
-                            href="{{ url('/dashboard') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
-                        >
-                            Dashboard
-                        </a>
-                    @else
-                        <a
-                            href="{{ route('login') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
-                        >
-                            Log in
-                        </a>
-
-                        @if (Route::has('register'))
-                            <a
-                                href="{{ route('register') }}"
-                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
-                                Register
-                            </a>
-                        @endif
-                    @endauth
-                </nav>
-            @endif
+                @endforeach
+            </nav>
         </header>
         <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
             <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
