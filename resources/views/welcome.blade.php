@@ -49,6 +49,48 @@
                     line-height: 1.5;
                     text-align: center;
                 }
+
+                .hero-panel {
+                    text-align: center;
+                    padding: 1.5rem;
+                    border-radius: 0.5rem;
+                    background: #ffffff;
+                    box-shadow: inset 0 0 0 1px rgba(26, 26, 0, 0.16);
+                }
+
+                .hero-title {
+                    margin: 0 0 0.5rem;
+                    font-size: 1.5rem;
+                    line-height: 2rem;
+                    font-weight: 500;
+                }
+
+                .hero-description {
+                    margin: 0 auto 1.5rem;
+                    max-width: 36rem;
+                    font-size: 0.9375rem;
+                    line-height: 1.5;
+                    color: #706f6c;
+                }
+
+                .hero-cta {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0.5rem 1.25rem;
+                    border: 1px solid #000000;
+                    border-radius: 0.125rem;
+                    background: #1b1b18;
+                    color: #ffffff;
+                    font-size: 0.875rem;
+                    line-height: 1.5;
+                    text-decoration: none;
+                }
+
+                .hero-cta:hover {
+                    background: #000000;
+                    color: #ffffff;
+                }
             </style>
         @endif
     </head>
@@ -77,6 +119,15 @@
                 @endforeach
             </nav>
         </header>
+        <section class="w-full max-w-[335px] lg:max-w-4xl mb-6" aria-labelledby="sentigate-hero-title">
+            <div class="hero-panel p-6 lg:p-10 bg-white dark:bg-[#161615] dark:text-[#EDEDEC] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d] rounded-lg">
+                <h1 id="sentigate-hero-title" class="hero-title mb-2 text-2xl lg:text-3xl font-medium">Introducing Sentigate</h1>
+                <p class="hero-description mx-auto mb-6 max-w-xl text-[15px] leading-6 text-[#706f6c] dark:text-[#A1A09A]">Sentigate is now available in this application.</p>
+                <a href="{{ route('contact.create') }}" class="hero-cta inline-flex items-center justify-center px-5 py-2 rounded-sm border border-black bg-[#1b1b18] text-white text-sm leading-normal hover:bg-black dark:bg-[#eeeeec] dark:border-[#eeeeec] dark:text-[#1C1C1A] dark:hover:bg-white dark:hover:border-white">
+                    Get started
+                </a>
+            </div>
+        </section>
         <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
             <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
                 <div class="text-[13px] leading-[20px] flex-1 p-6 pb-12 lg:p-20 bg-white dark:bg-[#161615] dark:text-[#EDEDEC] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d] rounded-bl-lg rounded-br-lg lg:rounded-tl-lg lg:rounded-br-none">
