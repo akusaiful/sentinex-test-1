@@ -434,6 +434,8 @@
                 background: rgba(5, 8, 22, 0.65);
             }
 
+            .sg-map-canvas .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9); }
+
             .sg-map-canvas.leaflet-container .leaflet-control-zoom,
             .sg-map-canvas.leaflet-container .leaflet-bar {
                 border: 1px solid var(--sg-border);
@@ -660,10 +662,10 @@
                     touchZoom: true,
                 });
 
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     attribution:
-                        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>',
+                        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
                 }).addTo(map);
             });
         </script>

@@ -34,8 +34,8 @@ class HomeMalaysiaMapTest extends TestCase
 
         $this->assertStringContainsString('cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css', $html);
         $this->assertStringContainsString('cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js', $html);
-        $this->assertStringContainsString('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', $html);
-        $this->assertStringNotContainsString('tile.openstreetmap.org', $html);
+        $this->assertStringContainsString('https://tile.openstreetmap.org/{z}/{x}/{y}.png', $html);
+        $this->assertStringNotContainsString('cartocdn', $html);
         $this->assertStringContainsString('L.map(', $html);
         $this->assertStringContainsString('data-map-lat="4.2"', $html);
         $this->assertStringContainsString('data-map-lng="109"', $html);
@@ -50,8 +50,12 @@ class HomeMalaysiaMapTest extends TestCase
 
         $html = $response->getContent();
 
-        $this->assertStringContainsString('dark_all', $html);
-        $this->assertStringContainsString('cartocdn.com', $html);
+        $this->assertStringContainsString('tile.openstreetmap.org', $html);
+        $this->assertStringNotContainsString('cartocdn', $html);
+        $this->assertStringContainsString(
+            '.sg-map-canvas .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9); }',
+            $html
+        );
         $this->assertStringContainsString('.sg-map-canvas.leaflet-container .leaflet-bar a', $html);
         $this->assertStringContainsString('.sg-map-canvas.leaflet-container .leaflet-control-attribution', $html);
         $this->assertStringContainsString('rgba(5, 8, 22, 0.85)', $html);
