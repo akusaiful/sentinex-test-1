@@ -10,6 +10,14 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
+        <!-- Leaflet (CDN, pinned, no build step) -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""
+        />
+
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -368,6 +376,102 @@
                     linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
             }
 
+            .sg-map {
+                position: relative;
+                overflow: hidden;
+                border-radius: 1.25rem;
+                border: 1px solid var(--sg-border);
+                padding: 1.75rem;
+                background-image:
+                    radial-gradient(30rem 20rem at 90% -12%, rgba(34, 211, 238, 0.24), transparent 62%),
+                    radial-gradient(24rem 18rem at -8% 120%, rgba(129, 140, 248, 0.22), transparent 60%),
+                    linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 40px 90px -60px rgba(34, 211, 238, 0.75);
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+            }
+
+            .sg-map-layout {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                align-items: center;
+            }
+
+            .sg-map-figure {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0;
+                min-height: 12rem;
+            }
+
+            .sg-map-figure::after {
+                content: '';
+                position: absolute;
+                inset: 12% 8%;
+                background: radial-gradient(closest-side, rgba(34, 211, 238, 0.28), transparent 72%);
+                filter: blur(30px);
+                pointer-events: none;
+            }
+
+            .sg-map-canvas {
+                position: relative;
+                z-index: 1;
+                width: 100%;
+                min-height: 18rem;
+                height: 22rem;
+                border-radius: 1rem;
+                overflow: hidden;
+                border: 1px solid var(--sg-border);
+                background: rgba(5, 8, 22, 0.65);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 30px 70px -50px rgba(34, 211, 238, 0.85);
+            }
+
+            .sg-map-canvas.leaflet-container {
+                font-family: inherit;
+                background: rgba(5, 8, 22, 0.65);
+            }
+
+            .sg-map-canvas .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9); }
+
+            .sg-map-canvas.leaflet-container .leaflet-control-zoom,
+            .sg-map-canvas.leaflet-container .leaflet-bar {
+                border: 1px solid var(--sg-border);
+                border-radius: 0.6rem;
+                overflow: hidden;
+                box-shadow: 0 18px 40px -30px rgba(34, 211, 238, 0.9);
+            }
+
+            .sg-map-canvas.leaflet-container .leaflet-bar a,
+            .sg-map-canvas.leaflet-container .leaflet-bar a:hover,
+            .sg-map-canvas.leaflet-container .leaflet-bar a:focus {
+                background: rgba(5, 8, 22, 0.85);
+                border-bottom: 1px solid var(--sg-border);
+                color: #e0f2fe;
+            }
+
+            .sg-map-canvas.leaflet-container .leaflet-bar a:hover,
+            .sg-map-canvas.leaflet-container .leaflet-bar a:focus {
+                background: rgba(34, 211, 238, 0.16);
+                color: var(--sg-accent);
+            }
+
+            .sg-map-canvas.leaflet-container .leaflet-bar a:last-child {
+                border-bottom: none;
+            }
+
+            .sg-map-canvas.leaflet-container .leaflet-control-attribution {
+                background: rgba(5, 8, 22, 0.72);
+                border-top-left-radius: 0.5rem;
+                color: rgba(226, 232, 240, 0.72);
+            }
+
+            .sg-map-canvas.leaflet-container .leaflet-control-attribution a {
+                color: var(--sg-accent);
+            }
+
             .sg-orb {
                 position: absolute;
                 width: 9rem;
@@ -414,6 +518,11 @@
                 .sg-grid {
                     grid-template-columns: 1.15fr 0.85fr;
                     gap: 1.5rem;
+                }
+
+                .sg-map-layout {
+                    grid-template-columns: 1.05fr 0.95fr;
+                    gap: 2rem;
                 }
             }
 
@@ -496,6 +605,69 @@
                     <span class="sg-mono">S</span>
                 </div>
             </section>
+
+            <section id="malaysia" class="sg-map" aria-labelledby="malaysia-map-heading">
+                <div class="sg-map-layout">
+                    <div>
+                        <h2 id="malaysia-map-heading" class="sg-h2">Across Malaysia</h2>
+                        <p class="sg-muted">Malaysia is made up of Peninsular Malaysia and East Malaysia on the island of Borneo, separated by the South China Sea. Kuala Lumpur is the capital city.</p>
+                        <ul class="sg-list">
+                            <li class="sg-list-item">
+                                <span class="sg-dot" aria-hidden="true"></span>
+                                <span>Peninsular Malaysia</span>
+                            </li>
+                            <li class="sg-list-item">
+                                <span class="sg-dot" aria-hidden="true"></span>
+                                <span>East Malaysia (Borneo)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <figure class="sg-map-figure">
+                        <div
+                            id="malaysia-map"
+                            class="sg-map-canvas"
+                            role="region"
+                            aria-label="Interactive map of Malaysia"
+                            data-map-lat="4.2"
+                            data-map-lng="109"
+                            data-map-zoom="6"
+                        ></div>
+                    </figure>
+                </div>
+            </section>
         </main>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""
+        ></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var el = document.getElementById('malaysia-map');
+
+                if (!el || typeof L === 'undefined') {
+                    return;
+                }
+
+                var map = L.map(el, {
+                    center: [parseFloat(el.dataset.mapLat), parseFloat(el.dataset.mapLng)],
+                    zoom: parseInt(el.dataset.mapZoom, 10),
+                    zoomControl: true,
+                    dragging: true,
+                    scrollWheelZoom: true,
+                    doubleClickZoom: true,
+                    boxZoom: true,
+                    keyboard: true,
+                    touchZoom: true,
+                });
+
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution:
+                        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+                }).addTo(map);
+            });
+        </script>
     </body>
 </html>
