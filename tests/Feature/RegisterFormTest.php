@@ -33,9 +33,10 @@ class RegisterFormTest extends TestCase
         $response = $this->get('/register');
 
         $response->assertStatus(200);
-        $response->assertSee('linear-gradient(to bottom right, #2563eb, #10b981)', false);
-        $response->assertSee('class="card"', false);
-        $response->assertSee('class="button"', false);
+        $response->assertSee('--sg-bg: #050816', false);
+        $response->assertSee('--sg-accent: #22d3ee', false);
+        $response->assertSee('class="sg-card"', false);
+        $response->assertSee('sg-btn sg-btn-primary', false);
     }
 
     public function test_register_form_posts_to_the_register_route(): void
