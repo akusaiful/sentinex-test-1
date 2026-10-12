@@ -777,8 +777,7 @@
                 }
 
                 .theme-toggle {
-                    order: 2;
-                    position: relative;
+                    /* The toggle now lives inside the off-canvas drawer. */
                     z-index: 70;
                 }
 
@@ -851,13 +850,17 @@
                     box-shadow: none;
                 }
 
-                /* The theme toggle stays reachable but reads as a plain nav item. */
+                /* The theme toggle lives inside the drawer and reads as a plain item. */
                 body.sg-page .theme-toggle {
+                    width: 100%;
+                    justify-content: flex-start;
+                    text-align: left;
                     padding: 0.7rem 0.25rem;
                     border: none;
                     border-radius: 0;
                     background: transparent;
                     color: #e2e8f5;
+                    font-size: 1rem;
                 }
 
                 body.sg-page .theme-toggle:hover,
@@ -941,24 +944,24 @@
                             {{ $item['label'] }}
                         </a>
                     @endforeach
+                    <button
+                        type="button"
+                        id="theme-toggle"
+                        class="theme-toggle"
+                        aria-pressed="false"
+                        aria-label="Switch to light theme"
+                        title="Toggle dark or light theme"
+                    >
+                        <svg class="theme-toggle-icon theme-toggle-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+                        </svg>
+                        <svg class="theme-toggle-icon theme-toggle-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="4" />
+                            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+                        </svg>
+                        <span class="theme-toggle-text">Theme</span>
+                    </button>
                 </div>
-                <button
-                    type="button"
-                    id="theme-toggle"
-                    class="theme-toggle"
-                    aria-pressed="false"
-                    aria-label="Switch to light theme"
-                    title="Toggle dark or light theme"
-                >
-                    <svg class="theme-toggle-icon theme-toggle-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-                    </svg>
-                    <svg class="theme-toggle-icon theme-toggle-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="4" />
-                        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-                    </svg>
-                    <span class="theme-toggle-text">Theme</span>
-                </button>
             </nav>
         </header>
         <main class="sg-main">
