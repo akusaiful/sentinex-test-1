@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RegisterController;
@@ -23,6 +24,12 @@ Route::get('/register/success', [RegisterController::class, 'success'])->name('r
 Route::get('/login', [AuthController::class, 'create'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('login.store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware('admin')->group(function () {
+    Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
+    Route::post('/admin/users/{user}/approve', [AdminController::class, 'approve'])->name('admin.users.approve');
+    Route::post('/admin/users/{user}/reject', [AdminController::class, 'reject'])->name('admin.users.reject');
+});
 
 Route::get('/health', function () {
     return response()->json(['ok' => true]);
