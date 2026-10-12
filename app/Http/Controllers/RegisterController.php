@@ -26,6 +26,32 @@ class RegisterController extends Controller
     }
 
     /**
+     * Show the registration status check form.
+     */
+    public function status(): View
+    {
+        return view('register-status');
+    }
+
+    /**
+     * Look up a registration by email and report its status.
+     */
+    public function checkStatus(Request $request): View
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'string', 'email', 'max:255'],
+        ]);
+
+        $user = User::where('email', $validated['email'])->first();
+
+        return view('register-status', [
+            'email' => $validated['email'],
+            'user' => $user,
+            'checked' => true,
+        ]);
+    }
+
+    /**
      * Store a newly registered user pending admin approval.
      */
     public function store(Request $request): RedirectResponse
