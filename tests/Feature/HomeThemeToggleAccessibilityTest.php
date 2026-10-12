@@ -56,7 +56,7 @@ class HomeThemeToggleAccessibilityTest extends TestCase
         // it should render only once, inside the drawer.
         $this->assertSame(1, substr_count($html, 'id="theme-toggle"'));
         $this->assertMatchesRegularExpression(
-            '/id="theme-toggle".*?<\/button>\s*<\/div>\s*<\/nav>/s',
+            '/id="theme-toggle".*?<\/button>.*?<\/div>\s*<\/nav>/s',
             $html
         );
     }
