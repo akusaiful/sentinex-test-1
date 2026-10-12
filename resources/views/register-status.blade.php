@@ -567,13 +567,19 @@
                         credentials: 'same-origin'
                     })
                         .then(function (response) {
-                            return response.json()
-                                .catch(function () {
-                                    return {};
-                                })
-                                .then(function (data) {
-                                    return { ok: response.ok, status: response.status, data: data };
-                                });
+                            return response.text().then(function (text) {
+                                var data = null;
+
+                                if (text) {
+                                    try {
+                                        data = JSON.parse(text);
+                                    } catch (error) {
+                                        data = null;
+                                    }
+                                }
+
+                                return { ok: response.ok, status: response.status, data: data };
+                            });
                         })
                         .then(function (outcome) {
                             if (outcome.status === 422) {
@@ -584,19 +590,29 @@
                             }
 
                             if (!outcome.ok) {
-                                renderError('Something went wrong. Please try again.');
+                                if (outcome.status === 419) {
+                                    renderError('Your session expired. Please refresh the page and try again.');
+                                    return;
+                                }
+
+                                renderError('We could not check your registration status right now (error ' + outcome.status + '). Please try again.');
                                 return;
                             }
 
-                            if (!outcome.data || outcome.data.found === false) {
-                                renderNotFound(outcome.data && outcome.data.email ? outcome.data.email : '');
+                            if (!outcome.data || typeof outcome.data !== 'object') {
+                                renderError('We received an unexpected response from the server. Please refresh the page and try again.');
+                                return;
+                            }
+
+                            if (outcome.data.found === false) {
+                                renderNotFound(outcome.data.email ? outcome.data.email : '');
                                 return;
                             }
 
                             renderStatus(outcome.data);
                         })
                         .catch(function () {
-                            renderError('Something went wrong. Please try again.');
+                            renderError('We could not reach the server. Please check your connection and try again.');
                         })
                         .finally(function () {
                             setLoading(false);
