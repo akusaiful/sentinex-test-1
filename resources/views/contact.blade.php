@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="dark">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Contact &mdash; {{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        @include('partials.sentigate-theme-head')
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -309,50 +306,131 @@
                 }
             </style>
         @endif
-    </head>
-    <body>
-        <div class="page">
-            <a href="{{ url('/') }}" class="back">&larr; Back home</a>
 
-            <main class="card">
-                <h1>Contact</h1>
-                <p>Send us a message and we will get back to you.</p>
+        <style>
+            /* Bring the confirmation modal in line with the Home theme. */
+            body.sg-page [data-confirmation-modal] {
+                background: rgba(5, 8, 22, 0.72);
+                -webkit-backdrop-filter: blur(6px);
+                backdrop-filter: blur(6px);
+            }
+
+            body.sg-page [data-confirmation-modal] .modal-panel {
+                border: 1px solid var(--sg-border);
+                background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 40px 90px -50px rgba(34, 211, 238, 0.8);
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+            }
+
+            body.sg-page [data-confirmation-modal] .modal-icon {
+                background: rgba(34, 211, 238, 0.12);
+                color: var(--sg-accent);
+            }
+
+            body.sg-page [data-confirmation-modal] .modal-title {
+                color: var(--sg-text);
+            }
+
+            body.sg-page [data-confirmation-modal] .modal-description {
+                color: var(--sg-muted);
+            }
+
+            body.sg-page [data-confirmation-modal] .modal-summary {
+                border-color: var(--sg-border);
+                background: rgba(255, 255, 255, 0.03);
+            }
+
+            body.sg-page [data-confirmation-modal] .modal-summary-row + .modal-summary-row {
+                border-top-color: var(--sg-border);
+            }
+
+            body.sg-page [data-confirmation-modal] .modal-summary dt {
+                color: var(--sg-muted);
+            }
+
+            body.sg-page [data-confirmation-modal] .modal-summary dd {
+                color: var(--sg-text);
+            }
+
+            body.sg-page [data-confirmation-modal] .modal-cancel {
+                border-color: rgba(148, 163, 184, 0.35);
+                background: rgba(255, 255, 255, 0.03);
+                color: #e2e8f5;
+            }
+
+            body.sg-page [data-confirmation-modal] .modal-confirm {
+                background: linear-gradient(120deg, var(--sg-accent), var(--sg-accent-2));
+                color: #04121a;
+            }
+
+            html[data-theme='light'] body.sg-page [data-confirmation-modal] {
+                background: rgba(15, 23, 42, 0.35);
+            }
+
+            html[data-theme='light'] body.sg-page [data-confirmation-modal] .modal-panel {
+                background: #ffffff;
+            }
+
+            html[data-theme='light'] body.sg-page [data-confirmation-modal] .modal-title {
+                color: #111827;
+            }
+
+            html[data-theme='light'] body.sg-page [data-confirmation-modal] .modal-description,
+            html[data-theme='light'] body.sg-page [data-confirmation-modal] .modal-summary dt {
+                color: #4b5568;
+            }
+
+            html[data-theme='light'] body.sg-page [data-confirmation-modal] .modal-summary dd {
+                color: #10152a;
+            }
+        </style>
+    </head>
+    <body class="sg-page bg-gradient-to-br bg-linear-to-br from-[#FDFDFC] via-[#f4efec] to-[#e9dfd8] dark:from-[#0a0a0a] dark:via-[#160f0d] dark:to-[#241009] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+        @include('partials.sentigate-header')
+
+        <main class="sg-main">
+            <section class="sg-card">
+                <h1 class="sg-title sg-title-sm">Contact</h1>
+                <p class="sg-lede">Send us a message and we will get back to you.</p>
 
                 @if (session('status'))
-                    <div class="status">{{ session('status') }}</div>
+                    <div class="sg-status">{{ session('status') }}</div>
                 @endif
 
                 <form id="contact-form" method="POST" action="{{ route('contact.store') }}">
                     @csrf
 
-                    <div class="field">
-                        <label for="name">Name</label>
-                        <input id="name" type="text" name="name" value="{{ old('name') }}" required>
+                    <div class="sg-field">
+                        <label class="sg-label" for="name">Name</label>
+                        <input class="sg-input" id="name" type="text" name="name" value="{{ old('name') }}" required>
                         @error('name')
                             <span class="error">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <div class="field">
-                        <label for="email">Email</label>
-                        <input id="email" type="email" name="email" value="{{ old('email') }}" required>
+                    <div class="sg-field">
+                        <label class="sg-label" for="email">Email</label>
+                        <input class="sg-input" id="email" type="email" name="email" value="{{ old('email') }}" required>
                         @error('email')
                             <span class="error">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <div class="field">
-                        <label for="mobile">Mobile</label>
-                        <input id="mobile" type="text" name="mobile" value="{{ old('mobile') }}" required>
+                    <div class="sg-field">
+                        <label class="sg-label" for="mobile">Mobile</label>
+                        <input class="sg-input" id="mobile" type="text" name="mobile" value="{{ old('mobile') }}" required>
                         @error('mobile')
                             <span class="error">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <button type="submit" class="button">Send</button>
+                    <div class="sg-actions">
+                        <button type="submit" class="sg-btn sg-btn-primary">Send</button>
+                    </div>
                 </form>
-            </main>
-        </div>
+            </section>
+        </main>
 
         <div
             id="confirmation-modal"
@@ -478,5 +556,7 @@
                 });
             })();
         </script>
+
+        @include('partials.sentigate-scripts')
     </body>
 </html>
