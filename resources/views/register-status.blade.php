@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Registration status &mdash; {{ config('app.name', 'Laravel') }}</title>
 
@@ -550,20 +551,37 @@
                     result.innerHTML = '<span class="sg-error">' + escapeHtml(message) + '</span>';
                 }
 
+                function csrfToken() {
+                    var input = form.querySelector('input[name="_token"]');
+
+                    if (input && input.value) {
+                        return input.value;
+                    }
+
+                    var meta = document.querySelector('meta[name="csrf-token"]');
+
+                    return meta ? (meta.getAttribute('content') || '') : '';
+                }
+
                 form.addEventListener('submit', function (event) {
                     event.preventDefault();
                     setLoading(true);
 
-                    var token = form.querySelector('input[name="_token"]');
+                    var token = csrfToken();
+                    var body = new FormData(form);
+
+                    if (token && !body.has('_token')) {
+                        body.append('_token', token);
+                    }
 
                     fetch(form.action, {
                         method: 'POST',
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest',
                             'Accept': 'application/json',
-                            'X-CSRF-TOKEN': token ? token.value : ''
+                            'X-CSRF-TOKEN': token
                         },
-                        body: new FormData(form),
+                        body: body,
                         credentials: 'same-origin'
                     })
                         .then(function (response) {
