@@ -961,6 +961,13 @@
                         </svg>
                         <span class="theme-toggle-text">Theme</span>
                     </button>
+                    <a
+                        href="{{ route('login') }}"
+                        @if (request()->routeIs('login')) aria-current="page" @endif
+                        class="nav-link nav-link-login"
+                    >
+                        Login
+                    </a>
                 </div>
             </nav>
         </header>
