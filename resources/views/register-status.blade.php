@@ -200,6 +200,41 @@
                 transform: translateY(0);
             }
 
+            .sg-btn[disabled] {
+                cursor: progress;
+            }
+
+            .sg-btn[data-loading="true"] {
+                opacity: 0.85;
+                pointer-events: none;
+            }
+
+            .sg-spinner {
+                display: none;
+                width: 1rem;
+                height: 1rem;
+                border: 2px solid rgba(4, 18, 26, 0.35);
+                border-top-color: #04121a;
+                border-radius: 9999px;
+                animation: sg-spin 0.6s linear infinite;
+            }
+
+            .sg-btn[data-loading="true"] .sg-spinner {
+                display: inline-block;
+            }
+
+            @keyframes sg-spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .sg-spinner {
+                    animation-duration: 1.4s;
+                }
+            }
+
             .sg-btn-ghost {
                 color: #e2e8f5;
                 border-color: rgba(148, 163, 184, 0.35);
@@ -365,10 +400,14 @@
                     </div>
 
                     <div class="sg-actions">
-                        <button type="submit" class="sg-btn sg-btn-primary">Check status</button>
+                        <button type="submit" class="sg-btn sg-btn-primary" id="status-submit" data-loading="false" data-loading-label="Checking&hellip;">
+                            <span class="sg-spinner" aria-hidden="true"></span>
+                            <span class="sg-btn-label">Check status</span>
+                        </button>
                     </div>
                 </form>
 
+                <div id="status-result" aria-live="polite">
                 @if (! empty($checked))
                     @if ($user === null)
                         <div class="sg-result sg-result-missing" role="status" data-status-result="not-found">
@@ -430,7 +469,140 @@
                         </div>
                     @endif
                 @endif
+                </div>
             </section>
         </main>
+
+        <script>
+            (function () {
+                var form = document.getElementById('status-form');
+                var result = document.getElementById('status-result');
+                var button = document.getElementById('status-submit');
+
+                if (!form || !result || !button) {
+                    return;
+                }
+
+                var label = button.querySelector('.sg-btn-label');
+                var defaultLabel = label ? label.textContent : '';
+
+                function setLoading(isLoading) {
+                    button.disabled = isLoading;
+                    button.setAttribute('data-loading', isLoading ? 'true' : 'false');
+                    button.setAttribute('aria-busy', isLoading ? 'true' : 'false');
+
+                    if (label) {
+                        label.textContent = isLoading
+                            ? (button.getAttribute('data-loading-label') || 'Checking...')
+                            : defaultLabel;
+                    }
+                }
+
+                function escapeHtml(value) {
+                    return String(value === null || value === undefined ? '' : value)
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;');
+                }
+
+                var icons = {
+                    approved: '<path d="M9 12l2 2 4-4" /><circle cx="12" cy="12" r="9" />',
+                    rejected: '<circle cx="12" cy="12" r="9" /><path d="m15 9-6 6" /><path d="m9 9 6 6" />',
+                    pending: '<circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />',
+                    missing: '<circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" />'
+                };
+
+                function icon(key) {
+                    return '<span class="sg-result-icon" aria-hidden="true">'
+                        + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" '
+                        + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+                        + (icons[key] || icons.pending)
+                        + '</svg></span>';
+                }
+
+                function renderNotFound(email) {
+                    result.innerHTML =
+                        '<div class="sg-result sg-result-missing" role="status" data-status-result="not-found">'
+                        + icon('missing')
+                        + '<div>'
+                        + '<p class="sg-result-title">No registration found</p>'
+                        + '<p class="sg-result-text">We could not find a registration for '
+                        + escapeHtml(email) + '. Please double-check the email address or register a new account.</p>'
+                        + '</div></div>';
+                }
+
+                function renderStatus(data) {
+                    var modifier = data.modifier || data.status || 'pending';
+                    result.innerHTML =
+                        '<div class="sg-result sg-result-' + escapeHtml(modifier) + '" role="status" '
+                        + 'data-status-result="' + escapeHtml(data.status) + '">'
+                        + icon(modifier)
+                        + '<div>'
+                        + '<p class="sg-result-title">' + escapeHtml(data.name) + '</p>'
+                        + '<span class="sg-result-badge">' + escapeHtml(data.label) + '</span>'
+                        + '<p class="sg-result-text">' + escapeHtml(data.message) + '</p>'
+                        + '</div></div>';
+                }
+
+                function renderError(message) {
+                    result.innerHTML = '<span class="sg-error">' + escapeHtml(message) + '</span>';
+                }
+
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    setLoading(true);
+
+                    var token = form.querySelector('input[name="_token"]');
+
+                    fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': token ? token.value : ''
+                        },
+                        body: new FormData(form),
+                        credentials: 'same-origin'
+                    })
+                        .then(function (response) {
+                            return response.json()
+                                .catch(function () {
+                                    return {};
+                                })
+                                .then(function (data) {
+                                    return { ok: response.ok, status: response.status, data: data };
+                                });
+                        })
+                        .then(function (outcome) {
+                            if (outcome.status === 422) {
+                                var errors = outcome.data && outcome.data.errors;
+                                var message = errors && errors.email ? errors.email[0] : 'Please enter a valid email address.';
+                                renderError(message);
+                                return;
+                            }
+
+                            if (!outcome.ok) {
+                                renderError('Something went wrong. Please try again.');
+                                return;
+                            }
+
+                            if (!outcome.data || outcome.data.found === false) {
+                                renderNotFound(outcome.data && outcome.data.email ? outcome.data.email : '');
+                                return;
+                            }
+
+                            renderStatus(outcome.data);
+                        })
+                        .catch(function () {
+                            renderError('Something went wrong. Please try again.');
+                        })
+                        .finally(function () {
+                            setLoading(false);
+                        });
+                });
+            })();
+        </script>
     </body>
 </html>
