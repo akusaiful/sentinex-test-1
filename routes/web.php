@@ -19,6 +19,8 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/register', [RegisterController::class, 'create'])->name('register.create');
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 Route::get('/register/success', [RegisterController::class, 'success'])->name('register.success');
+Route::get('/register/status', [RegisterController::class, 'status'])->name('register.status');
+Route::post('/register/status', [RegisterController::class, 'checkStatus'])->name('register.status.check');
 
 Route::get('/login', [AuthController::class, 'create'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('login.store');

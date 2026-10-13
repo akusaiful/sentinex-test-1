@@ -426,6 +426,7 @@
 
                     <div class="sg-actions">
                         <button type="submit" class="sg-btn sg-btn-primary">Create account</button>
+                        <a href="{{ route('register.status') }}" class="sg-btn sg-btn-ghost">Check registration status</a>
                     </div>
                 </form>
             </section>
