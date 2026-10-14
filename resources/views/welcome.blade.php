@@ -330,6 +330,154 @@
                 letter-spacing: -0.01em;
             }
 
+            /* Card-based feature/plan sections */
+            .sg-section {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .sg-section-head {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+                max-width: 44rem;
+            }
+
+            .sg-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.3rem 0.85rem;
+                border-radius: 9999px;
+                border: 1px solid rgba(129, 140, 248, 0.4);
+                background: rgba(129, 140, 248, 0.1);
+                color: #c7d2fe;
+                font-size: 0.72rem;
+                font-weight: 500;
+                letter-spacing: 0.09em;
+                text-transform: uppercase;
+            }
+
+            .sg-section-title {
+                margin: 0;
+                font-size: clamp(1.75rem, 4vw, 2.5rem);
+                font-weight: 600;
+                line-height: 1.15;
+                letter-spacing: -0.02em;
+                color: #f1f5fd;
+            }
+
+            .sg-pill {
+                display: inline-flex;
+                align-items: center;
+                align-self: flex-start;
+                gap: 0.4rem;
+                padding: 0.3rem 0.75rem;
+                border: 1px solid rgba(148, 163, 184, 0.3);
+                border-radius: 9999px;
+                background: rgba(148, 163, 184, 0.08);
+                color: #cbd5e1;
+                font-size: 0.72rem;
+                font-weight: 600;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+            }
+
+            .sg-pill-accent {
+                border-color: rgba(34, 211, 238, 0.42);
+                background: rgba(34, 211, 238, 0.1);
+                color: #67e8f9;
+            }
+
+            .sg-pill-violet {
+                border-color: rgba(129, 140, 248, 0.45);
+                background: rgba(129, 140, 248, 0.12);
+                color: #c7d2fe;
+            }
+
+            .sg-pill-pink {
+                border-color: rgba(232, 121, 249, 0.42);
+                background: rgba(232, 121, 249, 0.1);
+                color: #f5d0fe;
+            }
+
+            .sg-feature-grid,
+            .sg-plan-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            .sg-feature-card,
+            .sg-plan {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .sg-feature-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 2.5rem;
+                height: 2.5rem;
+                margin-bottom: 0.75rem;
+                border: 1px solid var(--sg-border);
+                border-radius: 0.75rem;
+                background: linear-gradient(135deg, rgba(34, 211, 238, 0.22), rgba(129, 140, 248, 0.22));
+                color: #67e8f9;
+            }
+
+            .sg-feature-icon svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+
+            .sg-h3 {
+                margin: 0.25rem 0 0;
+                font-size: 1.125rem;
+                font-weight: 600;
+                color: #f1f5fd;
+                letter-spacing: -0.01em;
+            }
+
+            .sg-plan-price {
+                margin: 0;
+                font-size: 2.25rem;
+                font-weight: 700;
+                line-height: 1;
+                letter-spacing: -0.02em;
+                color: #e0f2fe;
+            }
+
+            .sg-plan-price span {
+                font-size: 0.9rem;
+                font-weight: 500;
+                color: var(--sg-muted);
+            }
+
+            .sg-plan .sg-actions {
+                margin-top: auto;
+            }
+
+            .sg-plan-featured {
+                border-color: rgba(34, 211, 238, 0.5);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 40px 90px -55px rgba(34, 211, 238, 0.9);
+            }
+
+            /* Keep Roboto consistent across headings and body copy */
+            .sg-page h1,
+            .sg-page h2,
+            .sg-page h3,
+            .sg-page .sg-title,
+            .sg-page .sg-h2,
+            .sg-page .sg-h3 {
+                font-family: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+            }
+
             .sg-muted {
                 margin: 0 0 1rem;
                 line-height: 1.65;
@@ -534,6 +682,11 @@
                     gap: 1.5rem;
                 }
 
+                .sg-feature-grid,
+                .sg-plan-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+
                 .sg-map-layout {
                     grid-template-columns: 1.05fr 0.95fr;
                     gap: 2rem;
@@ -619,6 +772,35 @@
             }
 
             html[data-theme='light'] .sg-h2 {
+                color: #0f172a;
+            }
+
+            html[data-theme='light'] .sg-section-title,
+            html[data-theme='light'] .sg-h3 {
+                color: #0f172a;
+            }
+
+            html[data-theme='light'] .sg-eyebrow {
+                color: #4338ca;
+            }
+
+            html[data-theme='light'] .sg-pill {
+                color: #334155;
+            }
+
+            html[data-theme='light'] .sg-pill-accent {
+                color: #0e7490;
+            }
+
+            html[data-theme='light'] .sg-pill-violet {
+                color: #4338ca;
+            }
+
+            html[data-theme='light'] .sg-pill-pink {
+                color: #a21caf;
+            }
+
+            html[data-theme='light'] .sg-plan-price {
                 color: #0f172a;
             }
 
@@ -986,6 +1168,51 @@
                 </div>
             </section>
 
+            <section id="features" class="sg-section" aria-labelledby="features-title">
+                <div class="sg-section-head">
+                    <span class="sg-eyebrow">
+                        <span class="sg-badge-dot" aria-hidden="true"></span>
+                        Platform
+                    </span>
+                    <h2 id="features-title" class="sg-section-title">Everything in one dark, focused workspace</h2>
+                    <p class="sg-muted">Card-based building blocks that keep the Sentigate experience clear and consistent from the first screen.</p>
+                </div>
+                <div class="sg-feature-grid">
+                    <article class="sg-card sg-feature-card">
+                        <span class="sg-pill sg-pill-accent">Fast</span>
+                        <span class="sg-feature-icon" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" />
+                            </svg>
+                        </span>
+                        <h3 class="sg-h3">Ships in seconds</h3>
+                        <p class="sg-muted">A lean foundation with no build step required for the marketing pages.</p>
+                    </article>
+                    <article class="sg-card sg-feature-card">
+                        <span class="sg-pill sg-pill-violet">Secure</span>
+                        <span class="sg-feature-icon" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3 5 6v6c0 4.2 2.8 7.5 7 9 4.2-1.5 7-4.8 7-9V6l-7-3z" />
+                                <path d="m9 12 2 2 4-4" />
+                            </svg>
+                        </span>
+                        <h3 class="sg-h3">Secure foundations</h3>
+                        <p class="sg-muted">Sensible defaults for sessions, CSRF protection and validation out of the box.</p>
+                    </article>
+                    <article class="sg-card sg-feature-card">
+                        <span class="sg-pill sg-pill-pink">Scalable</span>
+                        <span class="sg-feature-icon" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 3 9 5-9 5-9-5 9-5z" />
+                                <path d="m3 13 9 5 9-5" />
+                            </svg>
+                        </span>
+                        <h3 class="sg-h3">Grows with you</h3>
+                        <p class="sg-muted">Composable sections and cards that scale cleanly from landing page to product.</p>
+                    </article>
+                </div>
+            </section>
+
             <section id="get-started" class="sg-grid" aria-labelledby="get-started-title">
                 <div class="sg-card">
                     <h2 id="get-started-title" class="sg-h2">Let's get started</h2>
@@ -1009,6 +1236,55 @@
                 <div class="sg-card sg-card-visual" aria-hidden="true">
                     <div class="sg-orb"></div>
                     <span class="sg-mono">S</span>
+                </div>
+            </section>
+
+            <section id="plans" class="sg-section" aria-labelledby="plans-title">
+                <div class="sg-section-head">
+                    <span class="sg-eyebrow">
+                        <span class="sg-badge-dot" aria-hidden="true"></span>
+                        Plans
+                    </span>
+                    <h2 id="plans-title" class="sg-section-title">Simple, transparent plans</h2>
+                    <p class="sg-muted">Start for free, then scale as your Sentigate workspace grows.</p>
+                </div>
+                <div class="sg-plan-grid">
+                    <article class="sg-card sg-plan">
+                        <span class="sg-pill">Starter</span>
+                        <h3 class="sg-h3">Starter</h3>
+                        <p class="sg-plan-price">$0 <span>/ month</span></p>
+                        <ul class="sg-list">
+                            <li class="sg-list-item"><span class="sg-dot" aria-hidden="true"></span><span>Single workspace</span></li>
+                            <li class="sg-list-item"><span class="sg-dot" aria-hidden="true"></span><span>Community support</span></li>
+                        </ul>
+                        <div class="sg-actions">
+                            <a href="{{ route('register.create') }}" class="sg-btn sg-btn-ghost">Get started</a>
+                        </div>
+                    </article>
+                    <article class="sg-card sg-plan sg-plan-featured">
+                        <span class="sg-pill sg-pill-accent">Popular</span>
+                        <h3 class="sg-h3">Pro</h3>
+                        <p class="sg-plan-price">$29 <span>/ month</span></p>
+                        <ul class="sg-list">
+                            <li class="sg-list-item"><span class="sg-dot" aria-hidden="true"></span><span>Unlimited projects</span></li>
+                            <li class="sg-list-item"><span class="sg-dot" aria-hidden="true"></span><span>Priority support</span></li>
+                        </ul>
+                        <div class="sg-actions">
+                            <a href="{{ route('contact.create') }}" class="sg-btn sg-btn-primary">Contact us</a>
+                        </div>
+                    </article>
+                    <article class="sg-card sg-plan">
+                        <span class="sg-pill sg-pill-violet">Enterprise</span>
+                        <h3 class="sg-h3">Enterprise</h3>
+                        <p class="sg-plan-price">Custom</p>
+                        <ul class="sg-list">
+                            <li class="sg-list-item"><span class="sg-dot" aria-hidden="true"></span><span>Dedicated environment</span></li>
+                            <li class="sg-list-item"><span class="sg-dot" aria-hidden="true"></span><span>Onboarding &amp; SLAs</span></li>
+                        </ul>
+                        <div class="sg-actions">
+                            <a href="{{ route('contact.create') }}" class="sg-btn sg-btn-ghost">Talk to sales</a>
+                        </div>
+                    </article>
                 </div>
             </section>
 
