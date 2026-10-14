@@ -80,6 +80,25 @@
                 --sg-accent: #22d3ee;
                 --sg-accent-2: #818cf8;
                 --sg-accent-3: #e879f9;
+
+                /* Typography scale — shared by body, headings and copy. */
+                --sg-font-sans: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+                --sg-font-size-base: 1rem;
+                --sg-line-height-base: 1.65;
+                --sg-heading-line-height: 1.15;
+                --sg-font-size-h1: clamp(2.75rem, 8vw, 5rem);
+                --sg-font-size-h2: clamp(1.375rem, 2.4vw, 1.75rem);
+                --sg-font-size-lede: clamp(1rem, 2.2vw, 1.2rem);
+                --sg-font-size-body: var(--sg-font-size-base);
+                --sg-font-size-badge: 0.72rem;
+                --sg-font-size-button: 0.95rem;
+
+                /* Spacing scale — keeps sections, cards and copy in rhythm. */
+                --sg-space-2: 0.5rem;
+                --sg-space-3: 0.75rem;
+                --sg-space-4: 1rem;
+                --sg-space-6: 1.5rem;
+                --sg-space-7: 1.75rem;
             }
 
             * {
@@ -93,7 +112,9 @@
                 min-height: 100vh;
                 margin: 0;
                 padding: 1.5rem;
-                font-family: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+                font-family: var(--sg-font-sans);
+                font-size: var(--sg-font-size-base);
+                line-height: var(--sg-line-height-base);
                 color: var(--sg-text);
                 background-color: var(--sg-bg);
                 background-image:
@@ -102,6 +123,17 @@
                     radial-gradient(40rem 40rem at 50% 120%, rgba(232, 121, 249, 0.14), transparent 60%),
                     linear-gradient(160deg, #050816 0%, #0b1030 55%, #120a2a 100%);
                 -webkit-font-smoothing: antialiased;
+                text-rendering: optimizeLegibility;
+            }
+
+            /* Headings share the Roboto stack and a consistent line height. */
+            body.sg-page h1,
+            body.sg-page h2,
+            body.sg-page h3,
+            body.sg-page .sg-title,
+            body.sg-page .sg-h2 {
+                font-family: var(--sg-font-sans);
+                line-height: var(--sg-heading-line-height);
                 text-rendering: optimizeLegibility;
             }
 
@@ -209,7 +241,7 @@
                 border: 1px solid rgba(34, 211, 238, 0.35);
                 background: rgba(34, 211, 238, 0.08);
                 color: #67e8f9;
-                font-size: 0.72rem;
+                font-size: var(--sg-font-size-badge);
                 font-weight: 500;
                 letter-spacing: 0.09em;
                 text-transform: uppercase;
@@ -227,9 +259,9 @@
                 position: relative;
                 z-index: 1;
                 margin: 0.9rem 0 0;
-                font-size: clamp(2.75rem, 8vw, 5rem);
+                font-size: var(--sg-font-size-h1);
                 font-weight: 600;
-                line-height: 1;
+                line-height: var(--sg-heading-line-height);
                 letter-spacing: -0.03em;
                 background: linear-gradient(100deg, #e0f2fe, #a5b4fc 55%, #f0abfc);
                 -webkit-background-clip: text;
@@ -242,8 +274,8 @@
                 z-index: 1;
                 margin: 1rem 0 0;
                 max-width: 36rem;
-                font-size: clamp(1rem, 2.2vw, 1.2rem);
-                line-height: 1.6;
+                font-size: var(--sg-font-size-lede);
+                line-height: var(--sg-line-height-base);
                 color: var(--sg-muted);
             }
 
@@ -264,7 +296,7 @@
                 padding: 0.75rem 1.5rem;
                 border: 1px solid transparent;
                 border-radius: 9999px;
-                font-size: 0.95rem;
+                font-size: var(--sg-font-size-button);
                 font-weight: 600;
                 line-height: 1;
                 text-decoration: none;
@@ -323,16 +355,18 @@
             }
 
             .sg-h2 {
-                margin: 0 0 0.5rem;
-                font-size: 1.5rem;
+                margin: 0 0 var(--sg-space-2);
+                font-size: var(--sg-font-size-h2);
                 font-weight: 600;
+                line-height: var(--sg-heading-line-height);
                 color: #f1f5fd;
                 letter-spacing: -0.01em;
             }
 
             .sg-muted {
-                margin: 0 0 1rem;
-                line-height: 1.65;
+                margin: 0 0 var(--sg-space-4);
+                font-size: var(--sg-font-size-body);
+                line-height: var(--sg-line-height-base);
                 color: var(--sg-muted);
             }
 
