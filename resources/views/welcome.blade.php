@@ -978,7 +978,7 @@
                     <span class="sg-badge-dot" aria-hidden="true"></span>
                     Sentigate Platform
                 </span>
-                <h1 id="hero-title" class="sg-title">Sentigate Fazlin</h1>
+                <h1 id="hero-title" class="sg-title">Sentigate Izazay</h1>
                 <p class="sg-lede">A modern Laravel foundation for your next project.</p>
                 <div class="sg-actions">
                     <a href="{{ route('contact.create') }}" class="sg-btn sg-btn-primary">Contact us</a>
